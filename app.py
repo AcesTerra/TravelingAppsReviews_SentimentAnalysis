@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 from transformers import BertTokenizer, BertModel
 import torch
+from torch import nn, optim
 
 class_names = ['negative', 'neutral', 'positive']
 PRE_TRAINED_MODEL_NAME = 'AcesTerra/PlayStore_TravelgApps_SentimentAnalisis'
