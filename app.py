@@ -61,7 +61,7 @@ if user_input and button :
     output = model(input_ids, attention_mask)
     _, prediction = torch.max(output, dim=1)
 
-    st.write("Review text:", review_text)
+    st.write("Review text:", user_input)
     st.write("Sentiment:", class_names[prediction])
     #test_sample = tokenizer([user_input], padding=True, truncation=True, max_length=512,return_tensors='pt')
     # test_sample
