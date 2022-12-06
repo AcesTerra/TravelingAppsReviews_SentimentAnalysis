@@ -19,7 +19,8 @@ class SentimentClassifier(nn.Module):
   def forward(self, input_ids, attention_mask):
     _, pooled_output = self.bert(
       input_ids=input_ids,
-      attention_mask=attention_mask
+      attention_mask=attention_mask,
+      return_dict=False
     )
     output = self.drop(pooled_output)
     return self.out(output)
@@ -27,7 +28,7 @@ class SentimentClassifier(nn.Module):
 @st.cache(allow_output_mutation=True)
 def get_model():
     tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
-    model = model = SentimentClassifier(len(class_names))
+    model = SentimentClassifier(len(class_names))
     return tokenizer,model
 
 
@@ -36,29 +37,25 @@ tokenizer,model = get_model()
 user_input = st.text_area('Enter text to analyze')
 button = st.button("Analyze")
 
-#d = {
-    
-#  0:'Negative',
-#  1:'Neutral',
-#  2:'Positive'
-
-#}
-
 if user_input and button :
     encoded_review = tokenizer.encode_plus(
-      user_input,
-      max_length=MAX_LEN,
-      add_special_tokens=True,
-      return_token_type_ids=False,
-      pad_to_max_length=True,
-      return_attention_mask=True,
-      return_tensors='pt',
-    )
+    user_input,
+    max_length=MAX_LEN,
+    add_special_tokens=True,
+    return_token_type_ids=False,
+    pad_to_max_length=True,
+    return_attention_mask=True,
+    return_tensors='pt',
+  )
+    
     input_ids = encoded_review['input_ids']
     attention_mask = encoded_review['attention_mask']
 
     output = model(input_ids, attention_mask)
     _, prediction = torch.max(output, dim=1)
+
+    #print(f'Review text: {review_text}')
+    #print(f'Sentiment  : {class_names[prediction]}')
 
     st.write("Review text:", user_input)
     st.write("Sentiment:", class_names[prediction])
