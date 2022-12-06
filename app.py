@@ -6,6 +6,7 @@ from torch import nn, optim
 
 class_names = ['negative', 'neutral', 'positive']
 PRE_TRAINED_MODEL_NAME = 'AcesTerra/PlayStore_TravelgApps_SentimentAnalisis'
+MAX_LEN = 160
 
 class SentimentClassifier(nn.Module):
 
@@ -36,15 +37,13 @@ tokenizer,model = get_model()
 user_input = st.text_area('Enter text to analyze')
 button = st.button("Analyze")
 
-'''
-d = {
+#d = {
     
-  0:'Negative',
-  1:'Neutral',
-  2:'Positive'
+#  0:'Negative',
+#  1:'Neutral',
+#  2:'Positive'
 
-}
-'''
+#}
 
 if user_input and button :
     encoded_review = tokenizer.encode_plus(
